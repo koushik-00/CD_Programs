@@ -1,74 +1,39 @@
-print("E->TE'\nE'->+TE'/@\nT->FT'\nT'->*FT'/@\nF->(E)/i\n")
-global s
-global i
-s=list(input("Enter the string: "))
-i=0
-def match(a):
-    global s
-    global i
-    if(i>=len(s)):
-        return False
-    elif (s[i]==a):
-        i+=1
-        return True
-    else:
-        return False
-def F():
-    if(match("(")):
-        if(E()):
-            if(match(")")):
-                return True
-            else:
-                return False
-        else:
-            return False
-    elif match("i"):
-        return True
-    else:
-        return False
-def Tx():
-    if(match("*")):
-        if(F()):
-            if(Tx()):
-                return True
-            else:
-                return False
-        else:
-            return False
-    else:
-        return True
+# Define the LL(1) grammar rules and parse table
+grammar_rules = {
+    'S': [('a', 'A'), ('b', 'B')],
+    'A': [('c',), ('d',)],
+  
+  'B': [('c',), ('e',)],
+}
+parse_table = {
+    ('S', 'a'): ('a', 'A'),
+    ('S', 'b'): ('b', 'B'),
+    ('A', 'c'): ('c',),
+    ('A', 'd'): ('d',),
+    ('B', 'c'): ('c',),
+    ('B', 'e'): ('e',),
+}
 
-def T():
-    if(F()):
-        if(Tx()):
-            return True
-        else:
-            return False
-    else:
-        return False
-def Ex():
-    if(match("+")):
-        if(T()):
-            if(Ex()):
-                return True
-            else:
+def ll1_parser(input_string):
+    stack=['S']
+    idx=0
+    while stack:
+        top=stack.pop()
+
+        if top in grammar_rules:
+            try:
+                prod=parse_table[top,input_string[idx]]
+            except KeyError:
                 return False
+            stack.extend(reversed(prod))
+        elif top==input_string[idx]:
+            idx+=1
         else:
             return False
-    else:
-        return True
-def E():
-    if(T()):
-        if(Ex()):
-            return True
-        else:
-            return False
-    else:
-        return False
-if(E()):
-    if(i==len(s)):
-        print("String Accepted")
-    else:
-        print("String not accepted")
+    return idx==len(input_string)
+input_str = 'acb'
+if ll1_parser(input_str):
+    print(f'Input string "{input_str}" was accepted.')
 else:
-    print("String not accepted")
+    print(f'Input string "{input_str}" was not accepted.')
+
