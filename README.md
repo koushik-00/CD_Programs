@@ -22,3 +22,8 @@
 ```bash
   ./a.out
 ```
+
+**Unix Path system to reach Desktop in windows**
+```bash
+  /mnt/c/users/Desktop
+ ```
