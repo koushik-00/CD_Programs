@@ -25,5 +25,5 @@
 
 **Unix Path system to reach Desktop in windows**
 ```bash
-  /mnt/c/users/Desktop
+ cd /mnt/c/users/Desktop
  ```
